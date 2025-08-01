@@ -1,97 +1,98 @@
 'use client'
 
 import Navigation from "./Navigation";
-import { useForm, useFieldArray } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
-interface InitialFormData {
+interface AssessmentFormData {
+    assessor: string
+    assessment_date: string
     first_name: string
     last_name: string
-    preferred_name: string
     ndis_number: string
-    plan_end_date: string
-    service_start_date: string
-    email: string
-    phone: string
-    address: string
-    contact_person: string
-    message: string
-    interpreter: "Yes" | "No"
-    history: string
-    information: string
-    services: string[]
-    rely_services: "Yes" | "No"
-    minimally_rely_services: "Yes" | "No"
-    affected_service_cancelled: "Yes" | "No"
-    any_risks: "Yes" | "No"
-    risk_details: string
-    preferred_contact: "Email" | "In-person" | "phone" | "Other"
-    able_sign_email: "Yes" | "No"
-    support_coordinator: "Yes" | "No"
-    coordinator_details: string
-    interface_support: "Yes" | "No"
-    interface_details: "Yes" | "No"
-    additional_comments: string
-    how_heared: string
+    birth_date: string
+    emergency_contact_one: string
+    emergency_contact_two: string
+    gp_details: string
+    invoices_sent: string
+    invoices_sent_email: string
+    summary_participant_value_belief: string
+    summary_participant_interest: string 
+    summary_participant_strength: string
+    summary_participant_likes_dislikes: string 
+    disability_types: string 
+    current_health_status: string 
+    family_informat_support_status: string 
+    assistance_type: string 
+    preferred_support_worker_type: string 
+    summary_participant_corner: string 
+    summary_participant_information: string 
+    participant_goal: string 
+    participant_action_plan: string 
+    participant_target_date: string 
+    participant_responsibility: string
+    casa_community_responsiblity: string 
+    risk: string
+    rist_rate: string 
+    treatment_control_measures: string 
+    responsibility: string 
+    participant_representative_name: string 
+    participant_representative_signature: string
+    casa_official_name: string 
+    casa_official_signature: string 
 }
 
-const serviceOptions = [
-    { id: 'supported_employment', label: 'Supported Employment' },
-    { id: 'day_option', label: 'Day- option' },
-    { id: 'education_employment', label: 'Education & Employment Support' },
-    {
-        id: 'in_home',
-        label: 'In-home -- household tasks, personal care, personal hygiene, meal preparation, meal delivery, medication administration, use of aids & equipment, mobility & transfers services'
-    },
-    {
-        id: 'house_cleaning',
-        label: 'House cleaning -- vacuuming, cleaning, mopping, washing, ironing, dusting, sweeping, surface cleaning, folding laundry, changing linen, rubbish removal.'
-    },
-    {
-        id: 'yard_maintenance',
-        label: 'Yard maintenance -- mowing, whipper snipping, hedge trimming, spraying, raking, lawn care'
-    },
-    {
-        id: 'social_community',
-        label: 'Social & community participation -- appointments, events, activities, gatherings'
-    },
-    { id: 'centre_based', label: 'Centre-based - events, activities, gatherings' },
-    { id: 'transport', label: 'Transport -- in-home and community access transport' },
-    {
-        id: 'accommodation_tenancy',
-        label: 'Accommodation and tenancy assistance - including IFO, MTA, SIL support'
-    },
-    {
-        id: 'community_nursing',
-        label: 'Community Nursing -- health & high-intensity care including complex health plan developments.'
-    },
-    {
-        id: 'health_wellbeing',
-        label: 'Health & wellbeing -- health & allied health care including dietary, exercise, speech, ot'
-    },
-    { id: 'behaviour_management', label: 'Behaviour management' },
-    { id: 'assistive_technology', label: 'Assistive Technology and Consumables' },
-    {id: 'other', label: 'Other'}
-]
+// const serviceOptions = [
+//     { id: 'supported_employment', label: 'Supported Employment' },
+//     { id: 'day_option', label: 'Day- option' },
+//     { id: 'education_employment', label: 'Education & Employment Support' },
+//     {
+//         id: 'in_home',
+//         label: 'In-home -- household tasks, personal care, personal hygiene, meal preparation, meal delivery, medication administration, use of aids & equipment, mobility & transfers services'
+//     },
+//     {
+//         id: 'house_cleaning',
+//         label: 'House cleaning -- vacuuming, cleaning, mopping, washing, ironing, dusting, sweeping, surface cleaning, folding laundry, changing linen, rubbish removal.'
+//     },
+//     {
+//         id: 'yard_maintenance',
+//         label: 'Yard maintenance -- mowing, whipper snipping, hedge trimming, spraying, raking, lawn care'
+//     },
+//     {
+//         id: 'social_community',
+//         label: 'Social & community participation -- appointments, events, activities, gatherings'
+//     },
+//     { id: 'centre_based', label: 'Centre-based - events, activities, gatherings' },
+//     { id: 'transport', label: 'Transport -- in-home and community access transport' },
+//     {
+//         id: 'accommodation_tenancy',
+//         label: 'Accommodation and tenancy assistance - including IFO, MTA, SIL support'
+//     },
+//     {
+//         id: 'community_nursing',
+//         label: 'Community Nursing -- health & high-intensity care including complex health plan developments.'
+//     },
+//     {
+//         id: 'health_wellbeing',
+//         label: 'Health & wellbeing -- health & allied health care including dietary, exercise, speech, ot'
+//     },
+//     { id: 'behaviour_management', label: 'Behaviour management' },
+//     { id: 'assistive_technology', label: 'Assistive Technology and Consumables' },
+//     {id: 'other', label: 'Other'}
+// ]
 
-const InitialForm = () => {
-    const { register, handleSubmit, watch, formState: { errors, isSubmitting }, reset } = useForm<InitialFormData>({
-        defaultValues: {
-            services: [] // start with empty array
-        }
-    });
+const AssessmentForm = () => {
+    const { register, handleSubmit, watch, formState: { errors, isSubmitting }, reset } = useForm<AssessmentFormData>();
 
-    const watchedServices = watch('services');
-
-    const onSubmit = async (data: InitialFormData) => {
+    const onSubmit = async (data: AssessmentFormData) => {
         try {
             console.log('Form Data:', data);
-            console.log('Selected Services:', data.services);
+            // console.log('Selected Services:', data.services);
 
-            const selectedServiceLabels = data.services.map(serviceId => {
-                const service = serviceOptions.find(opt => opt.id === serviceId)
-                return service ? service.label : serviceId
-            });
-            console.log('Selected Service Names:', selectedServiceLabels);
+            // const selectedServiceLabels = data.services.map(serviceId => {
+            //     const service = serviceOptions.find(opt => opt.id === serviceId)
+            //     return service ? service.label : serviceId
+            // });
+            // console.log('Selected Service Names:', selectedServiceLabels);
             // API call
             await new Promise(resolve => setTimeout(resolve, 1000));
             alert('Form submitted successfully');
@@ -105,14 +106,9 @@ const InitialForm = () => {
             <Navigation />
             <div className="max-w-6xl mx-auto flex gap-5">
                 <div className="flex-1">
-                    <h2 className="text-5xl">Initial Contact Form</h2>
+                    <h2 className="text-5xl">Participant Assessment & Support Plan</h2>
                     <p className="text-2xl">
-                        Hey there! <br /><br />
-                        This form our trusty sidekick in assessing the support you need. <br />
-                        Please contact us at 1800 18 2272 or email us at <br />
-                        info@casacommunity.com.au if you need assistance in filling it. <br />
-                        Regards, <br />
-                        Team Casa Community
+                        The information provided in this form will help us asses the appropriate support required for the participant.
                     </p>
                 </div>
                 <div className="flex-1">
@@ -737,4 +733,4 @@ const InitialForm = () => {
     )
 }
 
-export default InitialForm;
+export default AssessmentForm;
