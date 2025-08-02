@@ -5,7 +5,7 @@ const Header = () => {
     return (
             <header className="h-screen bg-black">
                 <Navigation/>
-                <div className="flex items-center justify-center">
+            <div className="flex items-center justify-center">
                     <div className="flex items-center justify-center">
                         <Image src="/images/casa.jpg" alt="company-logo" width={400} height={400} />
                         <div>

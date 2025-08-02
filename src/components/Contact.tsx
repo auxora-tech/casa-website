@@ -2,6 +2,10 @@
 
 import Navigation from "./Navigation";
 import { useForm } from "react-hook-form";
+import { Phone } from "lucide-react";
+import { MailIcon } from "lucide-react";
+import { MapPin } from "lucide-react";
+import { Clock } from "lucide-react";
 
 interface ContactData {
     first_name: string
@@ -125,7 +129,86 @@ const Contact = () => {
                         <button type="submit" className="w-full bg-white text-black font-bold cursor-pointer border-double border-white border-4 p-2 rounded-xl hover:bg-black hover:text-white">Submit Now</button>
                     </form>
                 </div>
+                <div className="my-15">
+                    <p className="text-2xl">
+                        If you'd prefer a face-to-face chat, we're more than happy to arrange a meeting with one of our representatives. Just be sure to book in advance, so we can give you our full attention and make the most of our time together!
+                    </p>
+                    <button type="button" className="w-full bg-white text-black font-bold cursor-pointer border-double border-white border-4 p-2 rounded-xl my-6 hover:bg-black hover:text-white">Book Now</button>
+                </div>
             </div>
+            <footer>
+                <div className="grid grid-cols-2 max-w-6xl mx-auto gap-30">
+                    <div>
+                        <h3 className="text-3xl">Open (by appointment only)</h3>
+                        <div className="my-3">
+                            <table className="border-separate border-spacing-x-5 border-spacing-y-4">
+                                <tbody>
+                                    <tr>
+                                        <td>Monday</td>
+                                        <td className="flex justify-between items-center">
+                                            <Clock /> 9am - 5pm
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tuesday</td>
+                                        <td className="flex justify-between items-center">
+                                            <Clock /> 9am - 5pm
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Wednesday</td>
+                                        <td className="flex justify-between items-center">
+                                            <Clock /> 9am - 5pm
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Thursday</td>
+                                        <td className="flex justify-between items-center">
+                                            <Clock /> 9am - 5pm
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Friday</td>
+                                        <td className="flex justify-between items-center">
+                                            <Clock /> 9am - 5pm
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <p>Please click "Book Now" button to book an appointment</p>
+                    </div>
+                    <div>
+                        <h3 className="text-3xl">Contact</h3>
+                        <div className="my-3">
+                            <table className="border-separate border-spacing-x-5 border-spacing-y-4">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <Phone />
+                                        </td>
+                                        <td>1800 18 2272</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <MailIcon />
+                                        </td>
+                                        <td>info@casacommunity.com.au</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <MapPin />
+                                        </td>
+                                        <td>Level G
+                                            121 King William St,
+                                            Adelaide, SA-5000</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </footer>
         </div>
     )
 }
