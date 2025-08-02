@@ -4,7 +4,7 @@ import Navigation from "./Navigation";
 import { useForm } from "react-hook-form";
 
 interface AssessmentFormData {
-    assessor: string
+    assessor_name: string
     assessment_date: string
     first_name: string
     last_name: string
@@ -15,13 +15,14 @@ interface AssessmentFormData {
     gp_details: string
     invoices_sent: string
     invoices_sent_email: string
+    preferred_communication_method: "Face to Face" | "Phone Call" | "Text" | "Email" | "Contact with my advocate/representative"
     summary_participant_value_belief: string
     summary_participant_interest: string 
     summary_participant_strength: string
     summary_participant_likes_dislikes: string 
     disability_types: string 
     current_health_status: string 
-    family_informat_support_status: string 
+    family_informal_support_status: string 
     assistance_type: string 
     preferred_support_worker_type: string 
     summary_participant_corner: string 
@@ -32,7 +33,7 @@ interface AssessmentFormData {
     participant_responsibility: string
     casa_community_responsiblity: string 
     risk: string
-    rist_rate: string 
+    risk_rate: "Low" | "Medium" | "High"
     treatment_control_measures: string 
     responsibility: string 
     participant_representative_name: string 
@@ -41,58 +42,12 @@ interface AssessmentFormData {
     casa_official_signature: string 
 }
 
-// const serviceOptions = [
-//     { id: 'supported_employment', label: 'Supported Employment' },
-//     { id: 'day_option', label: 'Day- option' },
-//     { id: 'education_employment', label: 'Education & Employment Support' },
-//     {
-//         id: 'in_home',
-//         label: 'In-home -- household tasks, personal care, personal hygiene, meal preparation, meal delivery, medication administration, use of aids & equipment, mobility & transfers services'
-//     },
-//     {
-//         id: 'house_cleaning',
-//         label: 'House cleaning -- vacuuming, cleaning, mopping, washing, ironing, dusting, sweeping, surface cleaning, folding laundry, changing linen, rubbish removal.'
-//     },
-//     {
-//         id: 'yard_maintenance',
-//         label: 'Yard maintenance -- mowing, whipper snipping, hedge trimming, spraying, raking, lawn care'
-//     },
-//     {
-//         id: 'social_community',
-//         label: 'Social & community participation -- appointments, events, activities, gatherings'
-//     },
-//     { id: 'centre_based', label: 'Centre-based - events, activities, gatherings' },
-//     { id: 'transport', label: 'Transport -- in-home and community access transport' },
-//     {
-//         id: 'accommodation_tenancy',
-//         label: 'Accommodation and tenancy assistance - including IFO, MTA, SIL support'
-//     },
-//     {
-//         id: 'community_nursing',
-//         label: 'Community Nursing -- health & high-intensity care including complex health plan developments.'
-//     },
-//     {
-//         id: 'health_wellbeing',
-//         label: 'Health & wellbeing -- health & allied health care including dietary, exercise, speech, ot'
-//     },
-//     { id: 'behaviour_management', label: 'Behaviour management' },
-//     { id: 'assistive_technology', label: 'Assistive Technology and Consumables' },
-//     {id: 'other', label: 'Other'}
-// ]
-
 const AssessmentForm = () => {
     const { register, handleSubmit, watch, formState: { errors, isSubmitting }, reset } = useForm<AssessmentFormData>();
 
     const onSubmit = async (data: AssessmentFormData) => {
         try {
             console.log('Form Data:', data);
-            // console.log('Selected Services:', data.services);
-
-            // const selectedServiceLabels = data.services.map(serviceId => {
-            //     const service = serviceOptions.find(opt => opt.id === serviceId)
-            //     return service ? service.label : serviceId
-            // });
-            // console.log('Selected Service Names:', selectedServiceLabels);
             // API call
             await new Promise(resolve => setTimeout(resolve, 1000));
             alert('Form submitted successfully');
@@ -104,26 +59,67 @@ const AssessmentForm = () => {
     return (
         <div className="h-screen">
             <Navigation />
-            <div className="max-w-6xl mx-auto flex gap-5">
+            <div className="max-w-6xl mx-auto">
                 <div className="flex-1">
                     <h2 className="text-5xl">Participant Assessment & Support Plan</h2>
                     <p className="text-2xl">
-                        The information provided in this form will help us asses the appropriate support required for the participant.
+                        The invoices_sent provided in this form will help us asses the appropriate support required for the participant.
                     </p>
                 </div>
-                <div className="flex-1">
+                <div className="my-6">
                     <form action="" onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                         <div>
-                            <label htmlFor="first_name">*First Name</label>
+                            <label htmlFor="assessor_name">*Name of the assesor</label>
+                            <input
+                                type="text"
+                                id="assessor_name"
+                                {
+                                ...register('assessor_name', {
+                                    required: 'Assessor Name is required',
+                                    minLength: { value: 2, message: 'Assessor Name must be at least 2 characters' }
+                                })
+                                }
+                                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${errors.assessor_name
+                                    ? 'border-red-300 focus:ring-red-500'
+                                    : 'border-gray-300 focus:ring-blue-500'
+                                    }`}
+                            />
+                            {
+                                errors.assessor_name && (
+                                    <p className="mt-1 text-sm text-red-600">{errors.assessor_name.message}</p>
+                                )
+                            }
+                        </div>
+                        <div>
+                            <label htmlFor="assessment_date">*Date of the assessment</label>
+                            <input
+                                type="date"
+                                id="assessment_date"
+                                {
+                                ...register('assessment_date', {
+                                    required: 'assessment date is required',
+                                })
+                                }
+                                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${errors.assessment_date
+                                    ? 'border-red-300 focus:ring-red-500'
+                                    : 'border-gray-300 focus:ring-blue-500'
+                                    }`}
+                            />
+                            {
+                                errors.assessment_date && (
+                                    <p className="mt-1 text-sm text-red-600">{errors.assessment_date.message}</p>
+                                )
+                            }
+                        </div>
+                        <h4 className="my-6 font-bold">PARTICIPANT'S DETAILS</h4>
+                        <div>
+                            <label htmlFor="first_name">First Name</label>
                             <input
                                 type="text"
                                 id="first_name"
                                 placeholder="John"
                                 {
-                                ...register('first_name', {
-                                    required: 'First Name is required',
-                                    minLength: { value: 2, message: 'First Name must be at least 2 characters' }
-                                })
+                                ...register('first_name')
                                 }
                                 className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${errors.first_name
                                     ? 'border-red-300 focus:ring-red-500'
@@ -137,16 +133,13 @@ const AssessmentForm = () => {
                             }
                         </div>
                         <div>
-                            <label htmlFor="first_name">*Last Name</label>
+                            <label htmlFor="last_name">Last Name</label>
                             <input
                                 type="text"
                                 id="last_name"
                                 placeholder="Doe"
                                 {
-                                ...register('last_name', {
-                                    required: 'Last Name is required',
-                                    minLength: { value: 2, message: 'Last Name must be at least 2 characters' }
-                                })
+                                ...register('last_name')
                                 }
                                 className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${errors.last_name
                                     ? 'border-red-300 focus:ring-red-500'
@@ -156,52 +149,6 @@ const AssessmentForm = () => {
                             {
                                 errors.last_name && (
                                     <p className="mt-1 text-sm text-red-600">{errors.last_name.message}</p>
-                                )
-                            }
-                        </div>
-                        <div>
-                            <label htmlFor="first_name">Preferred Name</label>
-                            <input
-                                type="text"
-                                id="preferred_name"
-                                placeholder="peter"
-                                {
-                                ...register('preferred_name')
-                                }
-                                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${errors.preferred_name
-                                    ? 'border-red-300 focus:ring-red-500'
-                                    : 'border-gray-300 focus:ring-blue-500'
-                                    }`}
-                            />
-                            {
-                                errors.preferred_name && (
-                                    <p className="mt-1 text-sm text-red-600">{errors.preferred_name.message}</p>
-                                )
-                            }
-                        </div>
-                        <div>
-                            <label htmlFor="email">*Email</label>
-                            <input
-                                type="email"
-                                id="email"
-                                placeholder="johndoe@example.com"
-                                {
-                                ...register('email', {
-                                    required: 'Email is required',
-                                    pattern: {
-                                        value: /\S+@\S+\.\S+/,
-                                        message: 'Please enter a valid email'
-                                    }
-                                })
-                                }
-                                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${errors.email
-                                    ? 'border-red-300 focus:ring-red-500'
-                                    : 'border-gray-300 focus:ring-blue-500'
-                                    }`}
-                            />
-                            {
-                                errors.email && (
-                                    <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
                                 )
                             }
                         </div>
@@ -240,488 +187,637 @@ const AssessmentForm = () => {
                             <p className="mt-1 text-xs text-gray-500">Enter exactly 9 digits (no spaces or dashes)</p>
                         </div>
                         <div>
-                            <label htmlFor="plan_end_date">*Plan End Date</label>
+                            <label htmlFor="birth_date">Date of birth</label>
                             <input
                                 type="date"
-                                id="plan_end_date"
+                                id="birth_date"
                                 {
-                                ...register('plan_end_date', {
-                                    required: 'Plan end date is required',
-                                    validate: (value) => {
-                                        const selectedDate = new Date(value)
-                                        const today = new Date()
-                                        today.setHours(0, 0, 0, 0)
-                                        
-                                        if (selectedDate < today) {
-                                            return 'Plan end date cannot be in the past'
-                                        }
-                                        return true
-                                    }
-                                })
+                                ...register('birth_date')
                                 }
-                                className="text-white w-full px-3 py-2 border border-gray-300 rounded-md [color-scheme:dark] focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${errors.birth_date
+                                    ? 'border-red-300 focus:ring-red-500'
+                                    : 'border-gray-300 focus:ring-blue-500'
+                                    }`}
                             />
-                            {errors.plan_end_date && (
-                                <p className="mt-1 text-sm text-red-600">{errors.plan_end_date.message}</p>
-                            )}
+                            {
+                                errors.birth_date && (
+                                    <p className="mt-1 text-sm text-red-600">{errors.birth_date.message}</p>
+                                )
+                            }
                         </div>
                         <div>
-                            <label htmlFor="phone">*Phone</label>
-                            <input
-                                type="tel"
-                                id="phone"
-                                {
-                                ...register('phone', {
-                                    required: 'Phone number is required',
-                                    pattern: {
-                                        value: /^(\+?61|0)[2-9]\d{8}$/,
-                                        message: 'Please enter a valid Australian phone number'
-                                    }
-                                })
-                                }
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                placeholder="0412 345 678 or +61 412 345 678"
-                            />
-                            {errors.phone && (
-                                <p className="mt-1 text-sm text-red-600">{errors.phone.message}</p>
-                            )}
-                            <p className="mt-1 text-xs text-gray-500">
-                                Australian format: 04XX XXX XXX or +61 4XX XXX XXX
-                            </p>
-                        </div>
-                        <div>
-                            <label htmlFor="address">Address</label>
+                            <label htmlFor="emergency_contact_one">*Emergency Contact Person 1</label>
                             <input
                                 type="text"
-                                id="address"
-                                placeholder="Please enter your address"
+                                id="emergency_contact_one"
+                                placeholder="Provide Name and Number"
                                 {
-                                ...register('address')
+                                ...register('emergency_contact_one')
                                 }
-                                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${errors.address
+                                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${errors.emergency_contact_one
                                     ? 'border-red-300 focus:ring-red-500'
                                     : 'border-gray-300 focus:ring-blue-500'
                                     }`}
                             />
                             {
-                                errors.address && (
-                                    <p className="mt-1 text-sm text-red-600">{errors.address.message}</p>
+                                errors.emergency_contact_one && (
+                                    <p className="mt-1 text-sm text-red-600">{errors.emergency_contact_one.message}</p>
                                 )
                             }
                         </div>
                         <div>
-                            <label htmlFor="contact_person">Contact Person/s</label>
+                            <label htmlFor="emergency_contact_two">*Emergency Contact Person 2</label>
                             <input
                                 type="text"
-                                id="contact_person"
+                                id="emergency_contact_two"
+                                placeholder="Provide Name and Number"
                                 {
-                                ...register('contact_person')
+                                ...register('emergency_contact_two')
                                 }
-                                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${errors.contact_person
+                                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${errors.emergency_contact_two
                                     ? 'border-red-300 focus:ring-red-500'
                                     : 'border-gray-300 focus:ring-blue-500'
                                     }`}
                             />
                             {
-                                errors.contact_person && (
-                                    <p className="mt-1 text-sm text-red-600">{errors.contact_person.message}</p>
+                                errors.emergency_contact_two && (
+                                    <p className="mt-1 text-sm text-red-600">{errors.emergency_contact_two.message}</p>
                                 )
                             }
-                            <p className="mt-1 text-xs text-gray-500">Please enter their name, phone number and their relation to you</p>
                         </div>
                         <div>
-                            <label htmlFor="information">*Could you tell us a little more about you or the participant?</label>
+                            <label htmlFor="gp_details">GP details</label>
                             <input
                                 type="text"
-                                id="information"
+                                id="gp_details"
+                                placeholder="Provide Name and Number"
                                 {
-                                ...register('information', {
-                                    required: "Yours or participant's information is required"
-                                })
+                                ...register('gp_details')
                                 }
-                                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${errors.information
+                                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${errors.gp_details
                                     ? 'border-red-300 focus:ring-red-500'
                                     : 'border-gray-300 focus:ring-blue-500'
                                     }`}
                             />
                             {
-                                errors.information && (
-                                    <p className="mt-1 text-sm text-red-600">{errors.information.message}</p>
-                                )
-                            }
-                            <p className="mt-1 text-xs text-gray-500">Please include your diagnosis, living, work, study details, etc</p>
-                        </div>
-                        <div>
-                            <label htmlFor="interpreter">Would you or the participant like a Interpreter?</label>
-                            <select
-                                id="interpreter"
-                                {
-                                ...register('interpreter')
-                                }
-                                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${errors.interpreter
-                                    ? 'border-red-300 focus:ring-red-500'
-                                    : 'border-gray-300 focus:ring-blue-500'
-                                    }`}
-                            >
-                                <option value="Please select an option" className="bg-black">Please select an option</option>
-                                <option value="Yes" className="bg-black">Yes</option>
-                                <option value="No" className="bg-black">No</option>
-                            </select>
-                            {
-                                errors.interpreter && (
-                                    <p className="mt-1 text-sm text-red-600">{errors.interpreter.message}</p>
+                                errors.gp_details && (
+                                    <p className="mt-1 text-sm text-red-600">{errors.gp_details.message}</p>
                                 )
                             }
                         </div>
                         <div>
-                            <label htmlFor="history">What is your or the participant cultural background/history?</label>
+                            <label htmlFor="invoices_sent">*Send Invoices to:</label>
                             <input
                                 type="text"
-                                id="history"
+                                id="invoices_sent"
+                                placeholder="Provide Name and Number"
                                 {
-                                ...register('history')
+                                ...register('invoices_sent', {
+                                    required: "This information is required"
+                                })
                                 }
-                                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${errors.history
+                                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${errors.invoices_sent
                                     ? 'border-red-300 focus:ring-red-500'
                                     : 'border-gray-300 focus:ring-blue-500'
                                     }`}
                             />
                             {
-                                errors.history && (
-                                    <p className="mt-1 text-sm text-red-600">{errors.history.message}</p>
-                                )
-                            }
-                        </div>
-                        <h4 className="my-6">SERVICE DETAILS</h4>
-                        <div className="space-y-3">
-                            {serviceOptions.map(service => (
-                                <div key={service.id} className="flex items-start">
-                                    <input
-                                        type="checkbox"
-                                        id={service.id}
-                                        value={service.id}
-                                        {
-                                        ...register('services', {
-                                            required: 'Please select at least one service'
-                                        })
-                                        }
-                                        className="h-4 w-4 text-red-600 focus:ring-red-500 border-2 border-red-400 rounded mt-1 flex-shrink-0"
-                                    />
-                                    <label
-                                        htmlFor={service.id}
-                                        className="ml-3 text-sm leading-relaxed cursor-pointer"
-                                    >
-                                        {service.label}
-                                    </label>
-                                </div>
-                            ))}
-                            {errors.services && (
-                                <p className="mt-2 text-sm text-red-600">{errors.services.message}</p>
-                            )}
-
-                            {/* show selected count  */}
-                            <p>
-                                Selected: {watchedServices?.length || 0} service(s)
-                            </p>
-                        </div>
-                        <div>
-                            <label htmlFor="service_start_date">When would you or the participant like to start your services?</label>
-                            <input
-                                type="date"
-                                id="service_start_date"
-                                {
-                                ...register('service_start_date', {
-                                    validate: (value) => {
-                                        const selectedDate = new Date(value)
-                                        const today = new Date()
-                                        today.setHours(0, 0, 0, 0)
-
-                                        if (selectedDate < today) {
-                                            return 'Service start date cannot be in the past'
-                                        }
-                                        return true
-                                    }
-                                })
-                                }
-                                className="text-white w-full px-3 py-2 border border-gray-300 rounded-md [color-scheme:dark] focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            />
-                            {errors.service_start_date && (
-                                <p className="mt-1 text-sm text-red-600">{errors.service_start_date.message}</p>
-                            )}
-                        </div>
-                        <h4 className="my-6">DISRUPTION, EMERGENCY & DISASTER INFORMATION</h4>
-                        <div>
-                            <label htmlFor="rely_services">*Will you or the participant fully/partially rely on services & support?</label>
-                            <select
-                                id="rely_services"
-                                {
-                                ...register('rely_services', {
-                                    required: "Please select either 'Yes' or 'No'"
-                                })
-                                }
-                                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${errors.rely_services
-                                    ? 'border-red-300 focus:ring-red-500'
-                                    : 'border-gray-300 focus:ring-blue-500'
-                                    }`}
-                            >
-                                <option value="Please select an option" className="bg-black">Please select an option</option>
-                                <option value="Yes" className="bg-black">Yes</option>
-                                <option value="No" className="bg-black">No</option>
-                            </select>
-                            {
-                                errors.rely_services && (
-                                    <p className="mt-1 text-sm text-red-600">{errors.rely_services.message}</p>
+                                errors.invoices_sent && (
+                                    <p className="mt-1 text-sm text-red-600">{errors.invoices_sent.message}</p>
                                 )
                             }
                         </div>
                         <div>
-                            <label htmlFor="minimally_rely_services">*Will you or the participant minimally rely on services & support?</label>
-                            <select
-                                id="minimally_rely_services"
-                                {
-                                ...register('minimally_rely_services', {
-                                    required: "Please select either 'Yes' or 'No'"
-                                })
-                                }
-                                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${errors.minimally_rely_services
-                                    ? 'border-red-300 focus:ring-red-500'
-                                    : 'border-gray-300 focus:ring-blue-500'
-                                    }`}
-                            >
-                                <option value="Please select an option" className="bg-black">Please select an option</option>
-                                <option value="Yes" className="bg-black">Yes</option>
-                                <option value="No" className="bg-black">No</option>
-                            </select>
-                            {
-                                errors.minimally_rely_services && (
-                                    <p className="mt-1 text-sm text-red-600">{errors.minimally_rely_services.message}</p>
-                                )
-                            }
-                        </div>
-                        <div>
-                            <label htmlFor="affected_service_cancelled">Would you or the participant be greatly affected if service & support were disrupted or cancelled?</label>
-                            <select
-                                id="affected_service_cancelled"
-                                {
-                                ...register('affected_service_cancelled')
-                                }
-                                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${errors.affected_service_cancelled
-                                    ? 'border-red-300 focus:ring-red-500'
-                                    : 'border-gray-300 focus:ring-blue-500'
-                                    }`}
-                            >
-                                <option value="Please select an option" className="bg-black">Please select an option</option>
-                                <option value="Yes" className="bg-black">Yes</option>
-                                <option value="No" className="bg-black">No</option>
-                            </select>
-                            {
-                                errors.affected_service_cancelled && (
-                                    <p className="mt-1 text-sm text-red-600">{errors.affected_service_cancelled.message}</p>
-                                )
-                            }
-                        </div>
-                        <div>
-                            <label htmlFor="any_risks">Are there any risks we need to know about?</label>
-                            <select
-                                id="any_risks"
-                                {
-                                ...register('any_risks')
-                                }
-                                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${errors.any_risks
-                                    ? 'border-red-300 focus:ring-red-500'
-                                    : 'border-gray-300 focus:ring-blue-500'
-                                    }`}
-                            >
-                                <option value="Please select an option" className="bg-black">Please select an option</option>
-                                <option value="Yes" className="bg-black">Yes</option>
-                                <option value="No" className="bg-black">No</option>
-                            </select>
-                            {
-                                errors.any_risks && (
-                                    <p className="mt-1 text-sm text-red-600">{errors.any_risks.message}</p>
-                                )
-                            }
-                        </div>
-                        <div>
+                            <label htmlFor="invoices_sent_email">*Send Invoices to</label>
                             <input
                                 type="text"
-                                id="risk_details"
+                                id="invoices_sent_email"
+                                placeholder="Email"
                                 {
-                                ...register('risk_details')
+                                ...register('invoices_sent_email')
                                 }
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${errors.invoices_sent_email
+                                    ? 'border-red-300 focus:ring-red-500'
+                                    : 'border-gray-300 focus:ring-blue-500'
+                                    }`}
                             />
-                            {errors.risk_details && (
-                                <p className="mt-1 text-sm text-red-600">{errors.risk_details.message}</p>
-                            )}
-                            <p className="mt-1 text-xs text-gray-500">
-                                Please provide details of the risks here
-                            </p>
-                        </div>
-                        <div>
-                            <label htmlFor="preferred_contact">How do you prefer to be contacted?</label>
-                            <select
-                                id="preferred_contact"
-                                {
-                                ...register('preferred_contact')
-                                }
-                                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${errors.preferred_contact
-                                    ? 'border-red-300 focus:ring-red-500'
-                                    : 'border-gray-300 focus:ring-blue-500'
-                                    }`}
-                            >
-                                <option value="Please select an option" className="bg-black">Please select an option</option>
-                                <option value="Email" className="bg-black">Email</option>
-                                <option value="In-person" className="bg-black">In-person</option>
-                                <option value="Phone" className="bg-black">Phone</option>
-                                <option value="Other" className="bg-black">Other</option>
-                            </select>
                             {
-                                errors.any_risks && (
-                                    <p className="mt-1 text-sm text-red-600">{errors.any_risks.message}</p>
+                                errors.invoices_sent_email && (
+                                    <p className="mt-1 text-sm text-red-600">{errors.invoices_sent_email.message}</p>
                                 )
                             }
                         </div>
+                        <fieldset>
+                            <legend>*Preferred Method of Communication</legend>
+                            <div>
+                                <input
+                                    type="checkbox"
+                                    id="face-to-face"
+                                    name="face-to-face"
+                                />
+                                <label htmlFor="face-to-face">Face to Face</label>
+                            </div>
+                            <div>
+                                <input
+                                    type="checkbox"
+                                    id="phone-call"
+                                    name="phone-call"
+                                />
+                                <label htmlFor="phone-call">Phone Call</label>
+                            </div>
+                            <div>
+                                <input
+                                    type="checkbox"
+                                    id="text"
+                                    name="text"
+                                />
+                                <label htmlFor="text">Text</label>
+                            </div>
+                            <div>
+                                <input
+                                    type="checkbox"
+                                    id="email"
+                                    name="email"
+                                />
+                                <label htmlFor="email">Email</label>
+                            </div>
+                            <div>
+                                <input
+                                    type="checkbox"
+                                    id="Contact with my advocate/representative"
+                                    name="Contact with my advocate/representative"
+                                />
+                                <label htmlFor="Contact with my advocate/representative">Contact with my advocate/representative</label>
+                            </div>
+                        </fieldset>
                         <div>
-                            <label htmlFor="able_sign_email">*Are you able to sign & email information/forms back to us?</label>
-                            <select
-                                id="able_sign_email"
-                                {
-                                ...register('able_sign_email', {
-                                    required: 'This information is important!'
-                                })
-                                }
-                                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${errors.able_sign_email
-                                    ? 'border-red-300 focus:ring-red-500'
-                                    : 'border-gray-300 focus:ring-blue-500'
-                                    }`}
-                            >
-                                <option value="Please select an option" className="bg-black">Please select an option</option>
-                                <option value="Yes" className="bg-black">Yes</option>
-                                <option value="No" className="bg-black">No</option>
-                            </select>
-                            {
-                                errors.able_sign_email && (
-                                    <p className="mt-1 text-sm text-red-600">{errors.able_sign_email.message}</p>
-                                )
-                            }
-                        </div>
-                        <h4 className="my-6">SERVICE DETAILS</h4>
-                        <div>
-                            <label htmlFor="support_coordinator">*Coordinator Of Support:</label>
-                            <select
-                                id="support_coordinator"
-                                {
-                                ...register('support_coordinator', {
-                                    required: 'This information is important!'
-                                })
-                                }
-                                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${errors.support_coordinator
-                                    ? 'border-red-300 focus:ring-red-500'
-                                    : 'border-gray-300 focus:ring-blue-500'
-                                    }`}
-                            >
-                                <option value="Please select an option" className="bg-black">Please select an option</option>
-                                <option value="Yes" className="bg-black">Yes</option>
-                                <option value="No" className="bg-black">No</option>
-                            </select>
-                            {
-                                errors.support_coordinator && (
-                                    <p className="mt-1 text-sm text-red-600">{errors.support_coordinator.message}</p>
-                                )
-                            }
-                        </div>
-                        <div>
-                            <input
-                                type="text"
-                                id="coordinator_details"
-                                {
-                                ...register('coordinator_details')
-                                }
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            />
-                            {errors.coordinator_details && (
-                                <p className="mt-1 text-sm text-red-600">{errors.coordinator_details.message}</p>
-                            )}
-                            <p className="mt-1 text-xs text-gray-500">
-                                Please provide their Name, Phone number, Company details.
-                            </p>
-                        </div>
-                        <div>
-                            <label htmlFor="interface_support">*Interface/Mainstream Supports:</label>
-                            <select
-                                id="interface_support"
-                                {
-                                ...register('interface_support', {
-                                    required: 'This information is important!'
-                                })
-                                }
-                                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${errors.interface_support
-                                    ? 'border-red-300 focus:ring-red-500'
-                                    : 'border-gray-300 focus:ring-blue-500'
-                                    }`}
-                            >
-                                <option value="Please select an option" className="bg-black">Please select an option</option>
-                                <option value="Yes" className="bg-black">Yes</option>
-                                <option value="No" className="bg-black">No</option>
-                            </select>
-                            {
-                                errors.interface_support && (
-                                    <p className="mt-1 text-sm text-red-600">{errors.interface_support.message}</p>
-                                )
-                            }
-                        </div>
-                        <div>
-                            <input
-                                type="text"
-                                id="interface_details"
-                                {
-                                ...register('interface_details')
-                                }
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            />
-                            {errors.interface_details && (
-                                <p className="mt-1 text-sm text-red-600">{errors.interface_details.message}</p>
-                            )}
-                            <p className="mt-1 text-xs text-gray-500">
-                                Please provide their Name, Phone number, Company details.
-                            </p>
-                        </div>
-                        <div>
-                            <label htmlFor="additional_comments">Additional Comments:</label>
+                            <label htmlFor="summary_participant_value_belief">Summary of participant's Values and beliefs:</label>
                             <textarea
-                                id="first_name"
-                                placeholder="Anything you want..."
+                                id="summary_participant_value_belief"
+                                placeholder="Add answer here.."
                                 {
-                                ...register('additional_comments')
+                                ...register('summary_participant_value_belief')
                                 }
-                                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${errors.additional_comments
+                                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${errors.summary_participant_value_belief
                                     ? 'border-red-300 focus:ring-red-500'
                                     : 'border-gray-300 focus:ring-blue-500'
                                     }`}
                             ></textarea>
                             {
-                                errors.additional_comments && (
-                                    <p className="mt-1 text-sm text-red-600">{errors.additional_comments.message}</p>
+                                errors.summary_participant_value_belief && (
+                                    <p className="mt-1 text-sm text-red-600">{errors.summary_participant_value_belief.message}</p>
                                 )
                             }
                         </div>
                         <div>
-                            <label htmlFor="how_heared">How did you hear about us?</label>
-                            <input
-                                type="text"
-                                id="how_heared"
+                            <label htmlFor="summary_participant_interest">​Summary of the Participant’s interests, leisure, community groups and involvement:</label>
+                            <textarea
+                                id="summary_participant_interest"
+                                placeholder="Add answer here.."
                                 {
-                                ...register('how_heared')
+                                ...register('summary_participant_interest')
                                 }
-                                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${errors.how_heared
+                                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${errors.summary_participant_interest
+                                    ? 'border-red-300 focus:ring-red-500'
+                                    : 'border-gray-300 focus:ring-blue-500'
+                                    }`}
+                            ></textarea>
+                            {
+                                errors.summary_participant_interest && (
+                                    <p className="mt-1 text-sm text-red-600">{errors.summary_participant_interest.message}</p>
+                                )
+                            }
+                        </div>
+                        <div>
+                            <label htmlFor="summary_participant_interest">Summary of the Participant’s strengths, life dreams and aspirations:</label>
+                            <textarea
+                                id="summary_participant_strength"
+                                placeholder="Add answer here.."
+                                {
+                                ...register('summary_participant_strength')
+                                }
+                                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${errors.summary_participant_strength
+                                    ? 'border-red-300 focus:ring-red-500'
+                                    : 'border-gray-300 focus:ring-blue-500'
+                                    }`}
+                            ></textarea>
+                            {
+                                errors.summary_participant_strength && (
+                                    <p className="mt-1 text-sm text-red-600">{errors.summary_participant_strength.message}</p>
+                                )
+                            }
+                        </div>
+                        <div>
+                            <label htmlFor="summary_participant_likes_dislikes">Summary of the Participant’s likes and dislikes:</label>
+                            <textarea
+                                id="summary_participant_likes_dislikes"
+                                placeholder="Add answer here.."
+                                {
+                                ...register('summary_participant_likes_dislikes')
+                                }
+                                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${errors.summary_participant_likes_dislikes
+                                    ? 'border-red-300 focus:ring-red-500'
+                                    : 'border-gray-300 focus:ring-blue-500'
+                                    }`}
+                            ></textarea>
+                            {
+                                errors.summary_participant_likes_dislikes && (
+                                    <p className="mt-1 text-sm text-red-600">{errors.summary_participant_likes_dislikes.message}</p>
+                                )
+                            }
+                        </div>
+                        <h4 className="my-6 font-bold">PARTICIPANT'S NEEDS ASSESSMENT</h4>
+                        <div>
+                            <label htmlFor="disability_types">Type of disability:</label>
+                            <textarea
+                                id="disability_types"
+                                placeholder="Add answer here.."
+                                {
+                                ...register('disability_types')
+                                }
+                                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${errors.disability_types
+                                    ? 'border-red-300 focus:ring-red-500'
+                                    : 'border-gray-300 focus:ring-blue-500'
+                                    }`}
+                            ></textarea>
+                            {
+                                errors.disability_types && (
+                                    <p className="mt-1 text-sm text-red-600">{errors.disability_types.message}</p>
+                                )
+                            }
+                        </div>
+                        <div>
+                            <label htmlFor="current_health_status">Current Health Status:</label>
+                            <textarea
+                                id="current_health_status"
+                                placeholder="Add answer here.."
+                                {
+                                ...register('current_health_status')
+                                }
+                                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${errors.current_health_status
+                                    ? 'border-red-300 focus:ring-red-500'
+                                    : 'border-gray-300 focus:ring-blue-500'
+                                    }`}
+                            ></textarea>
+                            {
+                                errors.current_health_status && (
+                                    <p className="mt-1 text-sm text-red-600">{errors.current_health_status.message}</p>
+                                )
+                            }
+                        </div>
+                        <div>
+                            <label htmlFor="family_informal_support_status">Status of family and informal support:</label>
+                            <textarea
+                                id="family_informal_support_status"
+                                placeholder="Add answer here.."
+                                {
+                                ...register('family_informal_support_status')
+                                }
+                                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${errors.family_informal_support_status
+                                    ? 'border-red-300 focus:ring-red-500'
+                                    : 'border-gray-300 focus:ring-blue-500'
+                                    }`}
+                            ></textarea>
+                            {
+                                errors.family_informal_support_status && (
+                                    <p className="mt-1 text-sm text-red-600">{errors.family_informal_support_status.message}</p>
+                                )
+                            }
+                        </div>
+                        <div>
+                            <label htmlFor="assistance_type">What type of assistance is required, and how often?</label>
+                            <textarea
+                                id="assistance_type"
+                                placeholder="Add answer here.."
+                                {
+                                ...register('assistance_type')
+                                }
+                                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${errors.assistance_type
+                                    ? 'border-red-300 focus:ring-red-500'
+                                    : 'border-gray-300 focus:ring-blue-500'
+                                    }`}
+                            ></textarea>
+                            {
+                                errors.assistance_type && (
+                                    <p className="mt-1 text-sm text-red-600">{errors.assistance_type.message}</p>
+                                )
+                            }
+                        </div>
+                        <div>
+                            <label htmlFor="preferred_support_worker_type">Preferred type of support worker (e.g. gender, age, language, culture, personality):</label>
+                            <textarea
+                                id="preferred_support_worker_type"
+                                placeholder="Add answer here.."
+                                {
+                                ...register('preferred_support_worker_type')
+                                }
+                                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${errors.preferred_support_worker_type
+                                    ? 'border-red-300 focus:ring-red-500'
+                                    : 'border-gray-300 focus:ring-blue-500'
+                                    }`}
+                            ></textarea>
+                            {
+                                errors.preferred_support_worker_type && (
+                                    <p className="mt-1 text-sm text-red-600">{errors.preferred_support_worker_type.message}</p>
+                                )
+                            }
+                        </div>
+                        <div>
+                            <label htmlFor="summary_participant_corner">Summary of the Participant’s concerns:</label>
+                            <textarea
+                                id="summary_participant_corner"
+                                placeholder="Add answer here.."
+                                {
+                                ...register('summary_participant_corner')
+                                }
+                                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${errors.summary_participant_corner
+                                    ? 'border-red-300 focus:ring-red-500'
+                                    : 'border-gray-300 focus:ring-blue-500'
+                                    }`}
+                            ></textarea>
+                            {
+                                errors.summary_participant_corner && (
+                                    <p className="mt-1 text-sm text-red-600">{errors.summary_participant_corner.message}</p>
+                                )
+                            }
+                        </div>
+                        <div>
+                            <label htmlFor="summary_participant_information">Summary of participant's information obtained from other providers (if applicable):</label>
+                            <textarea
+                                id="summary_participant_information"
+                                placeholder="Add answer here.."
+                                {
+                                ...register('summary_participant_information')
+                                }
+                                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${errors.summary_participant_information
+                                    ? 'border-red-300 focus:ring-red-500'
+                                    : 'border-gray-300 focus:ring-blue-500'
+                                    }`}
+                            ></textarea>
+                            {
+                                errors.summary_participant_information && (
+                                    <p className="mt-1 text-sm text-red-600">{errors.summary_participant_information.message}</p>
+                                )
+                            }
+                        </div>
+                        <h4 className="my-6 font-bold">PARTICIPANT'S GOALS</h4>
+                        <div>
+                            <label htmlFor="participant_goal">Goal / Objective</label>
+                            <textarea
+                                id="participant_goal"
+                                placeholder="Add answer here.."
+                                {
+                                ...register('participant_goal')
+                                }
+                                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${errors.participant_goal
+                                    ? 'border-red-300 focus:ring-red-500'
+                                    : 'border-gray-300 focus:ring-blue-500'
+                                    }`}
+                            ></textarea>
+                            {
+                                errors.participant_goal && (
+                                    <p className="mt-1 text-sm text-red-600">{errors.participant_goal.message}</p>
+                                )
+                            }
+                        </div>
+                        <div>
+                            <label htmlFor="participant_action_plan">Action Plan</label>
+                            <textarea
+                                id="participant_action_plan"
+                                placeholder="Add answer here.."
+                                {
+                                ...register('participant_action_plan')
+                                }
+                                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${errors.participant_action_plan
+                                    ? 'border-red-300 focus:ring-red-500'
+                                    : 'border-gray-300 focus:ring-blue-500'
+                                    }`}
+                            ></textarea>
+                            {
+                                errors.participant_action_plan && (
+                                    <p className="mt-1 text-sm text-red-600">{errors.participant_action_plan.message}</p>
+                                )
+                            }
+                        </div>
+                        <div>
+                            <label htmlFor="participant_target_date">Target Date</label>
+                            <input
+                                type="date"
+                                id="participant_target_date"
+                                {
+                                ...register('participant_target_date')
+                                }
+                                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${errors.participant_target_date
                                     ? 'border-red-300 focus:ring-red-500'
                                     : 'border-gray-300 focus:ring-blue-500'
                                     }`}
                             />
                             {
-                                errors.how_heared && (
-                                    <p className="mt-1 text-sm text-red-600">{errors.how_heared.message}</p>
+                                errors.participant_target_date && (
+                                    <p className="mt-1 text-sm text-red-600">{errors.participant_target_date.message}</p>
+                                )
+                            }
+                        </div>
+                        <div>
+                            <label htmlFor="participant_responsibility">Responsibility of the participant:</label>
+                            <textarea
+                                id="participant_responsibility"
+                                placeholder="Add answer here.."
+                                {
+                                ...register('participant_responsibility')
+                                }
+                                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${errors.participant_responsibility
+                                    ? 'border-red-300 focus:ring-red-500'
+                                    : 'border-gray-300 focus:ring-blue-500'
+                                    }`}
+                            ></textarea>
+                            {
+                                errors.participant_responsibility && (
+                                    <p className="mt-1 text-sm text-red-600">{errors.participant_responsibility.message}</p>
+                                )
+                            }
+                        </div>
+                        <div>
+                            <label htmlFor="casa_community_responsiblity">Responsibility of Casa Community:</label>
+                            <textarea
+                                id="casa_community_responsiblity"
+                                placeholder="Add answer here.."
+                                {
+                                ...register('casa_community_responsiblity')
+                                }
+                                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${errors.casa_community_responsiblity
+                                    ? 'border-red-300 focus:ring-red-500'
+                                    : 'border-gray-300 focus:ring-blue-500'
+                                    }`}
+                            ></textarea>
+                            {
+                                errors.casa_community_responsiblity && (
+                                    <p className="mt-1 text-sm text-red-600">{errors.casa_community_responsiblity.message}</p>
+                                )
+                            }
+                        </div>
+                        <h4 className="my-6 font-bold">Risk Assessment:</h4>
+                        <div>
+                            <label htmlFor="risk">Risk</label>
+                            <input
+                                type="text"
+                                id="risk"
+                                {
+                                ...register('risk')
+                                }
+                                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${errors.risk
+                                    ? 'border-red-300 focus:ring-red-500'
+                                    : 'border-gray-300 focus:ring-blue-500'
+                                    }`}
+                            />
+                            {
+                                errors.risk && (
+                                    <p className="mt-1 text-sm text-red-600">{errors.risk.message}</p>
+                                )
+                            }
+                        </div>
+                        <div>
+                            <label htmlFor="risk_rate">Risk Rate</label>
+                            <select
+                                id="risk_rate"
+                                {
+                                ...register('risk_rate')
+                                }
+                                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${errors.risk_rate
+                                    ? 'border-red-300 focus:ring-red-500'
+                                    : 'border-gray-300 focus:ring-blue-500'
+                                    }`}
+                            >
+                                <option value="Please select an option" className="bg-black">Please select an option</option>
+                                <option value="Low" className="bg-black">Low</option>
+                                <option value="Medium" className="bg-black">Medium</option>
+                                <option value="High" className="bg-black">High</option>
+                            </select>
+                            {
+                                errors.risk_rate && (
+                                    <p className="mt-1 text-sm text-red-600">{errors.risk_rate.message}</p>
+                                )
+                            }
+                        </div>
+                        <div>
+                            <label htmlFor="treatment_control_measures">Treatment Control Measures:</label>
+                            <textarea
+                                id="treatment_control_measures"
+                                placeholder="Add answer here.."
+                                {
+                                ...register('treatment_control_measures')
+                                }
+                                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${errors.treatment_control_measures
+                                    ? 'border-red-300 focus:ring-red-500'
+                                    : 'border-gray-300 focus:ring-blue-500'
+                                    }`}
+                            ></textarea>
+                            {
+                                errors.treatment_control_measures && (
+                                    <p className="mt-1 text-sm text-red-600">{errors.treatment_control_measures.message}</p>
+                                )
+                            }
+                        </div>
+                        <div>
+                            <label htmlFor="responsibility">Responsibility:</label>
+                            <textarea
+                                id="responsibility"
+                                placeholder="Add answer here.."
+                                {
+                                ...register('responsibility')
+                                }
+                                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${errors.responsibility
+                                    ? 'border-red-300 focus:ring-red-500'
+                                    : 'border-gray-300 focus:ring-blue-500'
+                                    }`}
+                            ></textarea>
+                            {
+                                errors.responsibility && (
+                                    <p className="mt-1 text-sm text-red-600">{errors.responsibility.message}</p>
+                                )
+                            }
+                        </div>
+                        <div>
+                            <label htmlFor="participant_representative_name">*Participant/Representative's Name</label>
+                            <input
+                                type="text"
+                                id="participant_representative_name"
+                                {
+                                ...register('participant_representative_name', {
+                                    required: "Participant or Representative's name is required"
+                                })
+                                }
+                                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${errors.participant_representative_name
+                                    ? 'border-red-300 focus:ring-red-500'
+                                    : 'border-gray-300 focus:ring-blue-500'
+                                    }`}
+                            />
+                            {
+                                errors.participant_representative_name && (
+                                    <p className="mt-1 text-sm text-red-600">{errors.participant_representative_name.message}</p>
+                                )
+                            }
+                        </div>
+                        <div>
+                            <label htmlFor="participant_representative_signature">*Participant/Representative's Signature</label>
+                            <input
+                                type="text"
+                                id="participant_representative_signature"
+                                {
+                                ...register('participant_representative_signature', {
+                                    required: "Participant or Representative's signature is required"
+                                })
+                                }
+                                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${errors.participant_representative_signature
+                                    ? 'border-red-300 focus:ring-red-500'
+                                    : 'border-gray-300 focus:ring-blue-500'
+                                    }`}
+                            />
+                            {
+                                errors.participant_representative_signature && (
+                                    <p className="mt-1 text-sm text-red-600">{errors.participant_representative_signature.message}</p>
+                                )
+                            }
+                        </div>
+                        <div>
+                            <label htmlFor="casa_official_name">*Casa Official's Name</label>
+                            <input
+                                type="text"
+                                id="casa_official_name"
+                                {
+                                ...register('casa_official_name', {
+                                    required: "casa_official_name is required"
+                                })
+                                }
+                                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${errors.casa_official_name
+                                    ? 'border-red-300 focus:ring-red-500'
+                                    : 'border-gray-300 focus:ring-blue-500'
+                                    }`}
+                            />
+                            {
+                                errors.casa_official_name && (
+                                    <p className="mt-1 text-sm text-red-600">{errors.casa_official_name.message}</p>
+                                )
+                            }
+                        </div>
+                        <div>
+                            <label htmlFor="casa_official_signature">*Casa Official's Signature</label>
+                            <input
+                                type="text"
+                                id="casa_official_signature"
+                                {
+                                ...register('casa_official_signature', {
+                                    required: "casa_official_signature is required"
+                                })
+                                }
+                                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${errors.casa_official_signature
+                                    ? 'border-red-300 focus:ring-red-500'
+                                    : 'border-gray-300 focus:ring-blue-500'
+                                    }`}
+                            />
+                            {
+                                errors.casa_official_signature && (
+                                    <p className="mt-1 text-sm text-red-600">{errors.casa_official_signature.message}</p>
                                 )
                             }
                         </div>

@@ -141,7 +141,7 @@ const InitialForm = () => {
                             }
                         </div>
                         <div>
-                            <label htmlFor="first_name">*Last Name</label>
+                            <label htmlFor="last_name">*Last Name</label>
                             <input
                                 type="text"
                                 id="last_name"

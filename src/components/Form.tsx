@@ -28,10 +28,10 @@ const Form = () => {
                 <Link href="/assessmentform" className="w-full">
                     <button type="button" className="w-full cursor-pointer border-double border-white border-4 p-2 rounded-xl hover:bg-white hover:text-black">Participant Support Assessment Form</button>
                 </Link>
-                <Link href="/application-form" className="w-full">
+                <Link href="/jobapplication" className="w-full">
                     <button type="button" className="w-full cursor-pointer border-double border-white border-4 p-2 rounded-xl hover:bg-white hover:text-black">Job Application Form</button>
                 </Link>
-                <Link href="/contact-form" className="w-full">
+                <Link href="/contact" className="w-full">
                     <button type="button" className="w-full cursor-pointer border-double border-white border-4 p-2 rounded-xl hover:bg-white hover:text-black">Contact Us</button>
                 </Link>
             </div>
